@@ -1,20 +1,19 @@
 require 'json'
 require 'yaml'
 
-module Prettys do
+module Prettys
+  @format = :json
 
-  
+  class << self
+    attr_accessor :format
 
-  class Core
-    def initialize
-
-    def self.prettys()
+    def prettys(object)
     end
   end
 end
 
 class Object
   def prettys 
-    Prettys::Core.prettys
+    Prettys.prettys(self)
   end
 end
