@@ -2,24 +2,45 @@ require 'json'
 require 'yaml'
 
 module Prettys
-  @format = :json
+  class Converter
+    attr_reader :format
 
-  class << self
     SUPPORTED_FORMATS = {
       raw: :inspect,
       json: :to_json, 
       yaml: :to_yaml
     }
+
     private_constant :SUPPORTED_FORMATS
 
-    attr_reader :format
+    def initialize(format)
+      self.format = format
+    end
 
     def format=(format)
       raise ArgumentError, "Unsupported format." unless SUPPORTED_FORMATS.include?(format)
       @format = format
     end
 
+    def convert(object)
+      object.send(SUPPORTED_FORMATS[format])
+    end
+  end
+
+  @converter = Converter.new(:json)
+
+  class << self
+
+    def format
+      @converter.format
+    end
+
+    def format=(format)
+      @converter.format = format
+    end
+
     def prettys(object)
+      @converter.convert(object)
     end
   end
 end
