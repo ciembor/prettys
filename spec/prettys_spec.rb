@@ -8,10 +8,13 @@ describe 'Prettys' do
     it 'should have default format set to :json' do
       Prettys.format.should == :json
     end
-    it 'should have setter for format' do
+    it 'should accept other formats' do
       Prettys.format = :yaml
       Prettys.format.should == :yaml
     end
+    it 'shouldn\'t accept not supported formats' do
+      expect { Prettys.format = :not_supported_format }.to raise_error(ArgumentError, 'Unsupported format.')
+    end 
   end
 end
 
