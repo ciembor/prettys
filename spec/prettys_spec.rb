@@ -42,6 +42,16 @@ describe 'Prettys' do
       Prettys.format = :yaml
     end
   end
+  describe 'Colorizer' do
+    describe '.colorize' do
+      let(:colorizer) { Prettys::Colorizer.new }
+      let(:some_string) { 'this is some string and this is awesome' }
+
+      it 'should add ANSI escape codes between matched strings' do
+      end
+      pending 'should add ANSI escape codes between matches of regular expression'
+    end
+  end
 end
 
 describe 'Object' do
