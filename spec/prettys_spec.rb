@@ -92,6 +92,34 @@ describe 'Prettys' do
         }).should == "\e[34;1mRED_BOLD_STRING\e[0m"
       end
     end
+
+    describe '.parse_complex_color_name' do
+      it 'should parse primitive colors' do
+        colorizer.parse_complex_color_name(:blue).should == {
+          color: :blue,
+          bold: false,
+          type: :foreground
+        }
+      end
+      it 'should parse bright (bold) colors' do
+        expected_result = {
+          color: :blue,
+          bold: true,
+          type: :foreground
+        }
+        colorizer.parse_complex_color_name(:bright_blue).should == expected_result
+        colorizer.parse_complex_color_name(:bold_blue).should == expected_result
+      end
+      it 'should_parse background (bg) colors' do
+        expected_result = {
+          color: :red,
+          bold: false,
+          type: :background
+        }
+        colorizer.parse_complex_color_name(:bg_red).should == expected_result
+        colorizer.parse_complex_color_name(:background_red).should == expected_result
+      end
+    end
   end
 
   describe 'Matcher' do

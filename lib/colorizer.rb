@@ -38,10 +38,44 @@ module Prettys
       escape_sequence(options) + options[:string] + end_of_escape_sequence
     end
 
+    def parse_complex_color_name(complex_color_name)
+      return {
+        color: complex_color_name,
+        bold: false,
+        type: :foreground
+      } if COLOR_NAMES.include?(complex_color_name)
+      splited_symbol = complex_color_name.to_s.split('_').map(&:to_sym)
+      if splited_symbol.length == 2
+        prefix = splited_symbol[0]
+        color = splited_symbol[1]
+      else
+        raise ArgumentError, 'Color name is too complex.'
+      end
+      if COLOR_NAMES.include?(color)
+        if [:bold, :bright].include?(prefix)
+          return {
+            color: color,
+            bold: true,
+            type: :foreground
+          }
+        elsif [:bg, :background].include?(prefix)
+          return {
+            color: color,
+            bold: false,
+            type: :background
+          }
+        else
+          raise ArgumentError, 'Color prefix is not recognized.'
+        end
+      else
+        raise ArgumentError, 'Color name is not recognized.'
+      end
+    end
+
     def colorize(options = {})
       options = default_options.merge(options)
       unless [:background, :foreground].include?(options[:type])
-        raise(ArgumentError, "Type must be a :background or :foreground")
+        raise ArgumentError, 'Type must be a :background or :foreground.'
       end
       marked_strings = Matcher.marked_strings(options[:string], options[:pattern])
       marked_strings.map do |ms| 
