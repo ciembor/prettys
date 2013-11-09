@@ -21,22 +21,17 @@ module Prettys
       COLORS[color_name] = index + 30
     end
 
-    TYPES = {
-      foreground: 0,
-      background: 1
-    }
-
-    private_constant :COLOR_NAMES, :CHROMATIC_COLOR_NAMES, :COLORS, :TYPES
+    private_constant :COLOR_NAMES, :CHROMATIC_COLOR_NAMES, :COLORS
 
     def escape_sequence(options)
       options = add_default_options(options)
       color_code = COLORS[options[:color]]
-      color_code += 10 if options[:bold]
-      "\\e#{color_code.to_s};#{TYPES[options[:type]].to_s}m"
+      color_code += 10 if options[:type] == :background
+      "\e[#{color_code.to_s};#{(options[:bold] ? 1 : 2).to_s}m"
     end
 
     def end_of_escape_sequence
-      '\e[0;0m'
+      "\e[0m"
     end
 
     def escaped_string(options)
@@ -45,6 +40,9 @@ module Prettys
 
     def colorize(options = {})
       options = add_default_options(options)
+      unless [:background, :foreground].include?(options[:type])
+        raise(ArgumentError, "Type must be a :background or :foreground")
+      end
       marked_strings = Matcher.marked_strings(options[:string], options[:pattern])
       marked_strings.map do |ms| 
         if ms[:marked]

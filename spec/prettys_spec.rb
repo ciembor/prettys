@@ -60,7 +60,7 @@ describe 'Prettys' do
           type: :foreground,
           color: :blue,
           bold: true
-        }).should == 'th\e44;0mis\e[0;0m \e44;0mis\e[0;0m some string and th\e44;0mis\e[0;0m \e44;0mis\e[0;0m awesome'
+        }).should == "th\e[34;1mis\e[0m \e[34;1mis\e[0m some string and th\e[34;1mis\e[0m \e[34;1mis\e[0m awesome"
       end
       pending 'should add ANSI escape codes between matches of regular expression'
     end
@@ -71,14 +71,14 @@ describe 'Prettys' do
           type: :foreground, 
           color: :blue,
           bold: true
-        }).should == '\e44;0m'
+        }).should == "\e[34;1m"
       end
       it 'should return correct escape code for text on a red background' do
         colorizer.escape_sequence({
           type: :background, 
           color: :red,
           bold: false
-        }).should == '\e31;1m'
+        }).should == "\e[41;2m"
       end
     end
 
@@ -89,7 +89,7 @@ describe 'Prettys' do
           type: :foreground, 
           color: :blue,
           bold: true
-        }).should == '\e44;0mRED_BOLD_STRING\e[0;0m'
+        }).should == "\e[34;1mRED_BOLD_STRING\e[0m"
       end
     end
   end
