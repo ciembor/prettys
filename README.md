@@ -1,0 +1,6 @@
+.prettys('asd')
+.prettys('asd', /"[^"]+"/, 'qwe')
+.prettys(['asd', /"[^"]+"/, 'qwe'])
+.prettys(blue: 'asd')
+.prettys(blue: 'asd', bright_red: /"[^"]+"/)
+.prettys(blue: 'asd', bg_red: [/"[^"]+"/, 'qwe'])

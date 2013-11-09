@@ -24,7 +24,7 @@ module Prettys
     private_constant :COLOR_NAMES, :CHROMATIC_COLOR_NAMES, :COLORS
 
     def escape_sequence(options)
-      options = add_default_options(options)
+      options = default_options.merge(options)
       color_code = COLORS[options[:color]]
       color_code += 10 if options[:type] == :background
       "\e[#{color_code.to_s};#{(options[:bold] ? 1 : 2).to_s}m"
@@ -39,7 +39,7 @@ module Prettys
     end
 
     def colorize(options = {})
-      options = add_default_options(options)
+      options = default_options.merge(options)
       unless [:background, :foreground].include?(options[:type])
         raise(ArgumentError, "Type must be a :background or :foreground")
       end
@@ -61,11 +61,8 @@ module Prettys
 
     private
 
-    def add_default_options(options)
-      options[:type] = :foreground unless options[:type]
-      options[:bold] = false unless options[:bold]
-      options[:color] = COLOR_NAMES[1] unless options[:color]
-      return options
+    def default_options
+      { type: :foreground, bold: false, color: COLOR_NAMES[1] }
     end
   end
 end
