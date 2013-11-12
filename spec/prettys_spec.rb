@@ -148,10 +148,11 @@ end
 describe 'Object' do
   subject { Object.new }
   let(:pattern) { 'is' }
+  let(:args) { [pattern] }
 
   describe '.prettys' do
     it 'should call Prettys.prettys' do
-      Prettys.should_receive(:prettys).with(self, { pattern: pattern })
+      Prettys.should_receive(:prettys).with(self, args)
       prettys(pattern)
     end
   end

@@ -44,13 +44,19 @@ module Prettys
         bold: false,
         type: :foreground
       } if COLOR_NAMES.include?(complex_color_name)
+
       splited_symbol = complex_color_name.to_s.split('_').map(&:to_sym)
-      if splited_symbol.length == 2
+
+      if splited_symbol.length == 1
+        raise ArgumentError, 'Color name is not recognized.'
+      elsif splited_symbol.length == 2
         prefix = splited_symbol[0]
         color = splited_symbol[1]
       else
+        puts splited_symbol.inspect
         raise ArgumentError, 'Color name is too complex.'
       end
+
       if COLOR_NAMES.include?(color)
         if [:bold, :bright].include?(prefix)
           return {
