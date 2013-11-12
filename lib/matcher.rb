@@ -9,6 +9,7 @@ module Prettys
       escape_sequences_length_sum = 0
       result = []
       string.enum_for(:scan, /(\e\[\d+;\d+m)|(\e\[0m)/).map do 
+
         match = Regexp.last_match
         result << {escape_sequence: match[0], index: match.begin(0) - escape_sequences_length_sum}
         escape_sequences_length_sum += result[:escape_sequence].length
