@@ -1,4 +1,5 @@
 require 'matcher'
+require 'colored_string'
 
 module Prettys
   class Colorizer
@@ -83,8 +84,11 @@ module Prettys
       unless [:background, :foreground].include?(options[:type])
         raise ArgumentError, 'Type must be a :background or :foreground.'
       end
-      marked_strings = Matcher.marked_strings(options[:string], options[:pattern])
-      marked_strings.map do |ms| 
+      raw_string = options[:string].is_a?(ColoredString) ? options[:string].raw_string : options[:string]
+      puts '=============================='
+      puts raw_string.inspect
+      marked_strings = Matcher.marked_strings(raw_string, options[:pattern])
+      colored_string = ColoredString.new(marked_strings.map do |ms| 
         if ms[:marked]
           escaped_string({
             string: ms[:string],
@@ -96,7 +100,13 @@ module Prettys
         else
           ms[:string]
         end
-      end.join
+      end.join)
+      if (options[:string].is_a?(ColoredString))
+        puts colored_string.inspect
+        colored_string.merge(options[:string])
+      else
+        colored_string
+      end
     end
 
     private

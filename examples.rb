@@ -13,4 +13,7 @@ puts array.prettys(bg_green: /"[^"]+"/)
 
 # inspecting with coloring multiple patterns
 array = [1, 2, 'string', 3, 4, 'another_string', 5, 6]
+puts array.prettys(bg_red: '"')
+puts array.prettys(bg_red: '"', yellow: /_./)
+puts array.prettys(bg_red: '"', bold_green: 'string')
 puts array.prettys(bg_red: '"', bold_green: 'string', yellow: /_./)
